@@ -86,6 +86,10 @@ Copy `.env.example` to `.env.local` and fill in your own values. Never commit re
 - Add automated tests.
 - Add a CSP header and per-item pagination in the API.
 
+## License
+
+Released under the MIT License. See [LICENSE](LICENSE). The visual design is modeled after another site and is not covered by this license.
+
 ## Author
 
 Sandro Iobidze - https://github.com/sandro9800
