@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, KeyRound, ShieldAlert, ShieldCheck } from "lucide-react";
+import { ArrowRight, KeyRound, ShieldCheck } from "lucide-react";
 import { Logo } from "@/components/Logo";
-import { hasAdminCredentials, isAuthenticated, login } from "@/lib/auth";
+import { isAuthenticated, login } from "@/lib/auth";
+import { useData } from "@/lib/DataContext";
 import { useToast } from "@/components/Toast";
 
 export function LoginPage() {
@@ -11,6 +12,7 @@ export function LoginPage() {
   const [submitting, setSubmitting] = useState(false);
   const nav = useNavigate();
   const toast = useToast();
+  const { refresh } = useData();
 
   useEffect(() => {
     if (isAuthenticated()) {
@@ -18,16 +20,19 @@ export function LoginPage() {
     }
   }, [nav]);
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
-    const ok = login(u.trim(), p);
-    setSubmitting(false);
-    if (ok) {
+    const result = await login(u.trim(), p);
+    if (result.ok) {
+      // reload data so admin-only parts (downloads, analytics, drafts) appear
+      await refresh();
+      setSubmitting(false);
       toast.push("Welcome back, admin.", "success");
       nav("/admin", { replace: true });
     } else {
-      toast.push("Invalid credentials.", "error");
+      setSubmitting(false);
+      toast.push(result.error || "Invalid credentials.", "error");
     }
   }
 
@@ -46,16 +51,6 @@ export function LoginPage() {
           <p className="text-sm text-slate-400 mb-5">
             Sign in to manage the catalog, media, analytics, and settings.
           </p>
-          {!hasAdminCredentials() && (
-            <div className="mb-4 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-200">
-              <div className="flex items-center gap-1.5 font-semibold mb-1">
-                <ShieldAlert size={13} /> Credentials not configured
-              </div>
-              Set <code className="font-mono">VITE_ADMIN_USERNAME</code> and{" "}
-              <code className="font-mono">VITE_ADMIN_PASSWORD</code> in your
-              Vercel environment variables, then redeploy.
-            </div>
-          )}
           <form onSubmit={onSubmit} className="space-y-3">
             <div>
               <label className="label">Username</label>

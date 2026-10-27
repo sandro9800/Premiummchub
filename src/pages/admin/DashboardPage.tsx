@@ -202,7 +202,7 @@ export function DashboardPage() {
               label="API Endpoint"
               value="POST /api/data · GET /api/data?action=all"
             />
-            <Row label="Auth" value="Env-var credentials" />
+            <Row label="Auth" value="Server-verified session token" />
             <Row label="Session" value="sessionStorage (per-tab)" />
             <Row
               label="Items synced"

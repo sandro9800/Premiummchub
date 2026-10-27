@@ -16,7 +16,7 @@ import { StatCard } from "@/components/UI";
 import { formatNumber } from "@/lib/utils";
 
 export function HomePage() {
-  const { items, publishedItems, downloads } = useData();
+  const { items, publishedItems } = useData();
   const totalDownloads = publishedItems.reduce(
     (sum, i) => sum + (i.downloads?.total || 0),
     0,
@@ -77,7 +77,7 @@ export function HomePage() {
             <StatCard
               label="Downloads"
               value={formatNumber(totalDownloads)}
-              hint={`${downloads.length} logged events`}
+              hint={`across ${publishedItems.length} items`}
               icon={<Download size={18} />}
               accent="emerald"
             />

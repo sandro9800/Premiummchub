@@ -6,13 +6,19 @@ import type {
   SiteSettings,
 } from "@/types";
 import { DEFAULT_SETTINGS } from "@/types";
+import { getToken, logout } from "./auth";
 
 async function apiFetch(action: string, body?: unknown): Promise<any> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  const token = getToken();
+  if (token) headers.Authorization = `Bearer ${token}`;
   const res = await fetch(`/api/data?action=${encodeURIComponent(action)}`, {
     method: body !== undefined ? "POST" : "GET",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: body !== undefined ? JSON.stringify(body || {}) : undefined,
   });
+  // An expired or invalid session: drop it so the admin is sent to log in again.
+  if (res.status === 401 && token) logout();
   if (!res.ok) {
     let detail = `${res.status} ${res.statusText}`;
     try {

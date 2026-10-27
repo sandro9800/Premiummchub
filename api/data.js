@@ -1,4 +1,5 @@
 import { Redis } from "@upstash/redis";
+import crypto from "node:crypto";
 
 const KEYS = {
   items: "pmch:items",
@@ -421,12 +422,113 @@ function todayKey() {
   return new Date().toISOString().slice(0, 10);
 }
 
+// ---------------------------------------------------------------------------
+// Server-side admin authentication
+// Credentials and the signing secret only ever live in server environment
+// variables (never in the browser bundle). ADMIN_* are preferred; the legacy
+// VITE_ADMIN_* names are read as a fallback so existing deployments keep
+// working until the variables are renamed.
+// ---------------------------------------------------------------------------
+const TOKEN_TTL_MS = 8 * 60 * 60 * 1000; // 8 hours
+
+function adminCreds() {
+  return {
+    user: process.env.ADMIN_USERNAME || process.env.VITE_ADMIN_USERNAME || "",
+    pass: process.env.ADMIN_PASSWORD || process.env.VITE_ADMIN_PASSWORD || "",
+  };
+}
+
+// The password is part of the key, so changing it invalidates every session.
+function signingKey() {
+  const { pass } = adminCreds();
+  const secret =
+    process.env.SESSION_SECRET || process.env.UPSTASH_REDIS_REST_TOKEN || "";
+  return pass && secret ? `${secret}:${pass}` : "";
+}
+
+function safeEqual(a, b) {
+  const ha = crypto.createHash("sha256").update(String(a)).digest();
+  const hb = crypto.createHash("sha256").update(String(b)).digest();
+  return crypto.timingSafeEqual(ha, hb);
+}
+
+function signToken(user) {
+  const expiresAt = Date.now() + TOKEN_TTL_MS;
+  const payload = Buffer.from(JSON.stringify({ u: user, exp: expiresAt })).toString(
+    "base64url",
+  );
+  const sig = crypto
+    .createHmac("sha256", signingKey())
+    .update(payload)
+    .digest("base64url");
+  return { token: `${payload}.${sig}`, expiresAt };
+}
+
+function verifyToken(token) {
+  const key = signingKey();
+  if (!key || typeof token !== "string") return false;
+  const parts = token.split(".");
+  if (parts.length !== 2) return false;
+  const [payload, sig] = parts;
+  const expected = crypto
+    .createHmac("sha256", key)
+    .update(payload)
+    .digest("base64url");
+  if (!safeEqual(sig, expected)) return false;
+  try {
+    const { exp } = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
+    return typeof exp === "number" && exp > Date.now();
+  } catch {
+    return false;
+  }
+}
+
+function isAdmin(req) {
+  const header = (req.headers["authorization"] || "").toString();
+  return header.startsWith("Bearer ") && verifyToken(header.slice(7));
+}
+
+function clientIp(req) {
+  const xff = (req.headers["x-forwarded-for"] || "").toString().split(",")[0].trim();
+  const ip = xff || (req.socket && req.socket.remoteAddress) || "unknown";
+  return ip.replace(/[^0-9a-fA-F:.]/g, "").slice(0, 45) || "unknown";
+}
+
+// Fixed-window counter in Redis. Returns true while under the limit.
+async function withinLimit(redis, key, limit, windowSec) {
+  const n = await redis.incr(key);
+  if (n === 1) await redis.expire(key, windowSec);
+  return n <= limit;
+}
+
+function isPublicItem(it) {
+  return !!it && !!it.published && !it.archived;
+}
+
+// What anonymous visitors may see: published items only, no admin analytics.
+function publicView(data) {
+  return {
+    ...data,
+    items: data.items.filter(isPublicItem),
+    downloads: [],
+    analytics: [],
+  };
+}
+
+function short(v) {
+  return String(v == null ? "" : v).slice(0, 100);
+}
+
+function unauthorized(res) {
+  return res.status(401).json({ error: "Unauthorized" });
+}
+
 export default async function handler(req, res) {
-  // CORS for development
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  if (req.method === "OPTIONS") return res.status(200).end();
+  // Same-origin only: the frontend is served from the same Vercel project,
+  // so no CORS headers are sent.
+  res.setHeader("Cache-Control", "no-store");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  if (req.method === "OPTIONS") return res.status(204).end();
 
   const action = (req.query.action || "").toString();
 
@@ -434,21 +536,26 @@ export default async function handler(req, res) {
   try {
     redis = getRedis();
   } catch (e) {
-    return res
-      .status(500)
-      .json({ error: e.message || "Server misconfigured" });
+    console.error(e);
+    return res.status(500).json({ error: "Server misconfigured" });
   }
 
   try {
+    const admin = isAdmin(req);
+
     if (req.method === "GET") {
       if (action === "all") {
         await ensureSeed(redis);
         const data = await readAll(redis);
-        return res.status(200).json({ ok: true, data });
+        return res
+          .status(200)
+          .json({ ok: true, data: admin ? data : publicView(data) });
       }
       if (action === "items") {
-        const items = (await redis.get(KEYS.items)) || [];
-        return res.status(200).json({ ok: true, data: items.map(normalizeItem) });
+        const items = ((await redis.get(KEYS.items)) || []).map(normalizeItem);
+        return res
+          .status(200)
+          .json({ ok: true, data: admin ? items : items.filter(isPublicItem) });
       }
       if (action === "media") {
         const media = (await redis.get(KEYS.media)) || [];
@@ -459,10 +566,12 @@ export default async function handler(req, res) {
         return res.status(200).json({ ok: true, data: settings });
       }
       if (action === "downloads") {
+        if (!admin) return unauthorized(res);
         const downloads = (await redis.get(KEYS.downloads)) || [];
         return res.status(200).json({ ok: true, data: downloads });
       }
       if (action === "analytics") {
+        if (!admin) return unauthorized(res);
         const analytics = (await redis.get(KEYS.analytics)) || [];
         return res.status(200).json({ ok: true, data: analytics });
       }
@@ -470,7 +579,32 @@ export default async function handler(req, res) {
     }
 
     if (req.method === "POST") {
-      const body = req.body || {};
+      const body = req.body && typeof req.body === "object" ? req.body : {};
+      const ip = clientIp(req);
+
+      // ----- public actions -----
+      if (action === "login") {
+        const { user, pass } = adminCreds();
+        if (!user || !pass || !signingKey()) {
+          return res
+            .status(503)
+            .json({ error: "Admin login is not configured on the server." });
+        }
+        const attemptsKey = `pmch:login:${ip}`;
+        if (!(await withinLimit(redis, attemptsKey, 10, 15 * 60))) {
+          return res
+            .status(429)
+            .json({ error: "Too many attempts. Try again in 15 minutes." });
+        }
+        const okUser = safeEqual(String(body.username ?? ""), user);
+        const okPass = safeEqual(String(body.password ?? ""), pass);
+        if (!(okUser && okPass)) {
+          return res.status(401).json({ error: "Invalid credentials." });
+        }
+        await redis.del(attemptsKey);
+        const { token, expiresAt } = signToken(user);
+        return res.status(200).json({ ok: true, token, expiresAt });
+      }
       if (action === "init") {
         const initialized = await redis.get(KEYS.initialized);
         if (initialized) {
@@ -479,40 +613,14 @@ export default async function handler(req, res) {
         await ensureSeed(redis);
         return res.status(200).json({ ok: true, seeded: true });
       }
-      if (action === "reset") {
-        await redis.del(
-          KEYS.items,
-          KEYS.media,
-          KEYS.settings,
-          KEYS.downloads,
-          KEYS.analytics,
-          KEYS.initialized,
-        );
-        return res.status(200).json({ ok: true });
-      }
-      if (action === "items") {
-        await redis.set(KEYS.items, body.data || []);
-        return res.status(200).json({ ok: true });
-      }
-      if (action === "media") {
-        await redis.set(KEYS.media, body.data || []);
-        return res.status(200).json({ ok: true });
-      }
-      if (action === "settings") {
-        await redis.set(KEYS.settings, body.data);
-        return res.status(200).json({ ok: true });
-      }
-      if (action === "downloads") {
-        await redis.set(KEYS.downloads, body.data || []);
-        return res.status(200).json({ ok: true });
-      }
-      if (action === "analytics") {
-        await redis.set(KEYS.analytics, body.data || []);
-        return res.status(200).json({ ok: true });
-      }
       if (action === "log-download") {
-        const { itemId, buttonId, buttonText, version } = body;
-        if (!itemId) return res.status(400).json({ error: "itemId required" });
+        if (!(await withinLimit(redis, `pmch:dl:${ip}`, 30, 60))) {
+          return res.status(429).json({ error: "Too many requests" });
+        }
+        const itemId = body.itemId;
+        if (typeof itemId !== "string" || !itemId || itemId.length > 100) {
+          return res.status(400).json({ error: "itemId required" });
+        }
         const [items, downloads, analytics] = await Promise.all([
           redis.get(KEYS.items),
           redis.get(KEYS.downloads),
@@ -522,7 +630,9 @@ export default async function handler(req, res) {
         const downloadsArr = downloads || [];
         const analyticsArr = analytics || [];
         const item = itemsArr.find((i) => i.id === itemId);
-        if (!item) return res.status(404).json({ error: "Item not found" });
+        if (!item || !isPublicItem(item)) {
+          return res.status(404).json({ error: "Item not found" });
+        }
         item.downloads = item.downloads || {
           total: 0,
           daily: 0,
@@ -538,9 +648,9 @@ export default async function handler(req, res) {
           itemId: item.id,
           itemName: item.name,
           itemType: item.type,
-          buttonId: buttonId || "",
-          buttonText: buttonText || "",
-          version: version || item.version || "",
+          buttonId: short(body.buttonId),
+          buttonText: short(body.buttonText),
+          version: short(body.version) || item.version || "",
           timestamp: new Date().toISOString(),
         };
         downloadsArr.unshift(log);
@@ -563,13 +673,41 @@ export default async function handler(req, res) {
         ]);
         return res.status(200).json({ ok: true });
       }
+
+      // ----- everything below requires a valid admin session -----
+      if (!admin) return unauthorized(res);
+
+      if (action === "reset") {
+        await redis.del(
+          KEYS.items,
+          KEYS.media,
+          KEYS.settings,
+          KEYS.downloads,
+          KEYS.analytics,
+          KEYS.initialized,
+        );
+        return res.status(200).json({ ok: true });
+      }
+      if (action === "items" || action === "media" || action === "downloads" || action === "analytics") {
+        if (!Array.isArray(body.data)) {
+          return res.status(400).json({ error: "data must be an array" });
+        }
+        await redis.set(KEYS[action], body.data);
+        return res.status(200).json({ ok: true });
+      }
+      if (action === "settings") {
+        if (!body.data || typeof body.data !== "object" || Array.isArray(body.data)) {
+          return res.status(400).json({ error: "data must be an object" });
+        }
+        await redis.set(KEYS.settings, body.data);
+        return res.status(200).json({ ok: true });
+      }
       return res.status(400).json({ error: "Unknown POST action" });
     }
 
     return res.status(405).json({ error: "Method not allowed" });
   } catch (err) {
-    return res
-      .status(500)
-      .json({ error: err.message || "Internal server error" });
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
   }
 }

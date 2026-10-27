@@ -32,16 +32,24 @@ A full-stack catalog of Minecraft clients, mods and macros with a public storefr
 | Database | Upstash Redis (`@upstash/redis`) |
 | Hosting | Vercel |
 
+## Security model
+
+- **Server-side authentication.** `POST /api/data?action=login` checks the admin credentials against server-only environment variables (constant-time comparison) and returns an HMAC-signed session token that expires after 8 hours. Changing the admin password invalidates all sessions.
+- **Protected writes.** Every write action (`items`, `media`, `settings`, `downloads`, `analytics`, `reset`) and the admin-only reads (`downloads`, `analytics`) require `Authorization: Bearer <token>`. The browser UI redirects are only a convenience; the API enforces access.
+- **Visibility.** Anonymous visitors only receive published, non-archived items. Drafts and download logs are admin-only.
+- **Abuse limits.** Login attempts (10 per 15 min per IP) and public download logging (30 per minute per IP) are rate-limited with Redis counters.
+- **No secrets in the browser.** Credentials are never prefixed with `VITE_`, so they are not bundled into the client build. Same-origin API, no wildcard CORS, basic security headers via `vercel.json`.
+
 ## Project structure
 
 ```
-api/data.js            Single serverless function, dispatches on ?action=
-src/lib/api.ts         Typed wrapper around the API (all reads/writes go through it)
+api/data.js              Single serverless function: auth, validation, data actions
+src/lib/api.ts           Typed API wrapper (adds the session token to requests)
+src/lib/auth.ts          Login / logout / session helpers
 src/lib/DataContext.tsx  Loads all data on mount and exposes it to the app
-src/lib/auth.ts        Admin login / session helpers
-src/pages/             Public pages
-src/pages/admin/       Admin pages
-src/components/        Shared UI components
+src/pages/               Public pages
+src/pages/admin/         Admin pages
+src/components/          Shared UI components
 ```
 
 ## Getting started
@@ -59,8 +67,9 @@ Copy `.env.example` to `.env.local` and fill in your own values. Never commit re
 
 | Name | Description |
 | ---- | ----------- |
-| `VITE_ADMIN_USERNAME` | Admin username |
-| `VITE_ADMIN_PASSWORD` | Admin password |
+| `ADMIN_USERNAME` | Admin username (server-side) |
+| `ADMIN_PASSWORD` | Admin password (server-side) |
+| `SESSION_SECRET` | Long random string used to sign session tokens |
 | `UPSTASH_REDIS_REST_URL` | REST URL from your Upstash database |
 | `UPSTASH_REDIS_REST_TOKEN` | REST token from your Upstash database |
 
@@ -68,14 +77,14 @@ Copy `.env.example` to `.env.local` and fill in your own values. Never commit re
 
 1. Push the repo to GitHub and import it into Vercel.
 2. Create a free Upstash Redis database.
-3. Add the four environment variables above in the Vercel project settings.
+3. Add the environment variables above in the Vercel project settings.
 4. Deploy. The catalog is seeded automatically on the first request.
 
 ## Roadmap
 
-- Move admin authentication to the server (token-protected write endpoints). Variables prefixed with `VITE_` are bundled into the client build, so the current admin login is suitable for a demo, not for sensitive data.
 - Store uploaded media in object storage instead of base64.
-- Add tests.
+- Add automated tests.
+- Add a CSP header and per-item pagination in the API.
 
 ## Author
 
