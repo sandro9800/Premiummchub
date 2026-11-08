@@ -53,6 +53,7 @@ function AppShell() {
           <Route path="*" element={<NotFoundPage />} />
         </Route>
 
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/admin/login" element={<LoginPage />} />
 
         <Route
