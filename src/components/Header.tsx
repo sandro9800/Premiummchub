@@ -16,7 +16,7 @@ export function Header() {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/5 bg-ink-900/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-white/[0.08] bg-ink-950/85 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <Logo />
         <nav className="hidden md:flex items-center gap-1">
@@ -27,7 +27,7 @@ export function Header() {
               end={n.to === "/"}
               className={({ isActive }) =>
                 cn(
-                  "px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors",
+                  "px-3.5 py-2 rounded-lg text-[13px] font-medium transition-colors", 
                   isActive
                     ? "bg-white/5 text-white"
                     : "text-slate-400 hover:text-white hover:bg-white/5",
