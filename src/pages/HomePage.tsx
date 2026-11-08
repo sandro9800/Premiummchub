@@ -38,19 +38,15 @@ export function HomePage() {
 
   return (
     <div className="relative">
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 grid-bg opacity-50" />
-        <div className="absolute -top-40 left-1/2 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-violet-500/20 blur-[120px]" />
-        <div className="absolute top-40 right-0 h-72 w-72 rounded-full bg-emerald-500/10 blur-[100px]" />
-
+      <section className="relative overflow-hidden border-b border-white/[0.06]">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 pt-16 pb-20 md:pt-24 md:pb-28">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-200">
-              <Sparkles size={12} /> Live, synced across all devices
+            <div className="inline-flex items-center gap-2 rounded-full border border-lime-300/20 bg-lime-300/[0.07] px-3 py-1 text-xs font-medium text-lime-200">
+              <span className="h-1.5 w-1.5 rounded-full bg-lime-300 shadow-[0_0_10px_rgba(190,242,100,0.9)]" /> Live catalog · updated daily
             </div>
-            <h1 className="mt-5 text-4xl md:text-6xl font-extrabold tracking-tight text-balance">
-              <span className="text-white">The premium vault for</span>{" "}
-              <span className="gradient-text">Minecraft power-users</span>
+            <h1 className="mt-5 text-4xl md:text-7xl font-semibold tracking-[-0.04em] leading-[0.98] text-balance">
+              <span className="text-white">Tools that make</span>{" "}
+              <span className="gradient-text">every session better.</span>
             </h1>
             <p className="mt-5 text-base md:text-lg text-slate-400 max-w-2xl text-balance">
               Discover curated clients, mods, and macros — handpicked,
@@ -172,8 +168,7 @@ export function HomePage() {
       )}
 
       <section className="mx-auto max-w-7xl px-4 sm:px-6 pb-20">
-        <div className="relative overflow-hidden rounded-3xl border border-violet-500/20 bg-gradient-to-br from-violet-500/10 via-ink-900 to-emerald-500/5 p-8 md:p-12">
-          <div className="absolute inset-0 grid-bg opacity-30" />
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-ink-900 p-8 md:p-12">
           <div className="relative max-w-2xl">
             <h3 className="text-2xl md:text-3xl font-bold text-white">
               Want your client on the hub?
@@ -252,18 +247,15 @@ function CategoryCard({
   accent: "violet" | "emerald" | "amber";
 }) {
   const accents = {
-    violet: "from-violet-500/15 to-violet-500/0 text-violet-300 border-violet-500/20",
-    emerald: "from-emerald-500/15 to-emerald-500/0 text-emerald-300 border-emerald-500/20",
-    amber: "from-amber-500/15 to-amber-500/0 text-amber-300 border-amber-500/20",
+    violet: "text-lime-300 border-lime-300/20",
+    emerald: "text-slate-300 border-white/10",
+    amber: "text-slate-300 border-white/10",
   } as const;
   return (
     <Link
       to={to}
       className={`group relative overflow-hidden rounded-2xl border bg-ink-800/60 p-6 backdrop-blur-xl transition-all hover:-translate-y-1 ${accents[accent]}`}
     >
-      <div
-        className={`absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gradient-to-br blur-2xl ${accents[accent]}`}
-      />
       <div className="relative">
         <div
           className={`flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 ${accents[accent].split(" ").pop()}`}

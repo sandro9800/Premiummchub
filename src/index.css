@@ -8,23 +8,8 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-ink-900 text-slate-200 font-sans antialiased;
-    background-image: radial-gradient(
-        ellipse 80% 60% at 50% -20%,
-        rgba(139, 92, 246, 0.18),
-        transparent 60%
-      ),
-      radial-gradient(
-        ellipse 60% 50% at 100% 100%,
-        rgba(16, 185, 129, 0.08),
-        transparent 60%
-      ),
-      radial-gradient(
-        ellipse 60% 50% at 0% 80%,
-        rgba(245, 158, 11, 0.06),
-        transparent 60%
-      );
-    background-attachment: fixed;
+    @apply bg-ink-950 text-slate-200 font-sans antialiased;
+    background: #08090a;
   }
   ::selection {
     @apply bg-violet-500/40 text-white;
@@ -46,7 +31,7 @@
 
 @layer components {
   .glass {
-    @apply bg-ink-800/60 backdrop-blur-xl border border-white/5;
+    @apply bg-white/[0.035] backdrop-blur-xl border border-white/[0.08];
   }
   .glass-strong {
     @apply bg-ink-800/80 backdrop-blur-2xl border border-white/10;
@@ -55,19 +40,19 @@
     @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed select-none;
   }
   .btn-primary {
-    @apply btn bg-gradient-to-br from-violet-500 to-violet-600 text-white hover:from-violet-400 hover:to-violet-500 shadow-lg shadow-violet-500/20 hover:shadow-violet-500/40;
+    @apply btn bg-lime-300 text-ink-950 hover:bg-lime-200 shadow-lg shadow-lime-300/10 hover:shadow-lime-300/20;
   }
   .btn-emerald {
-    @apply btn bg-gradient-to-br from-emerald-500 to-emerald-600 text-white hover:from-emerald-400 hover:to-emerald-500 shadow-lg shadow-emerald-500/20;
+    @apply btn bg-emerald-600 text-white hover:bg-emerald-500;
   }
   .btn-amber {
-    @apply btn bg-gradient-to-br from-amber-500 to-amber-600 text-white hover:from-amber-400 hover:to-amber-500 shadow-lg shadow-amber-500/20;
+    @apply btn bg-amber-600 text-white hover:bg-amber-500;
   }
   .btn-ghost {
     @apply btn bg-white/5 text-slate-200 hover:bg-white/10 border border-white/5;
   }
   .btn-danger {
-    @apply btn bg-gradient-to-br from-rose-500 to-rose-600 text-white hover:from-rose-400 hover:to-rose-500 shadow-lg shadow-rose-500/20;
+    @apply btn bg-rose-600 text-white hover:bg-rose-500;
   }
   .input {
     @apply w-full rounded-lg bg-ink-900/80 border border-white/10 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 outline-none transition focus:border-violet-500/60 focus:ring-2 focus:ring-violet-500/20;
@@ -100,16 +85,7 @@
     @apply text-2xl md:text-3xl font-bold tracking-tight text-white;
   }
   .gradient-text {
-    @apply bg-gradient-to-br from-violet-300 via-violet-400 to-emerald-300 bg-clip-text text-transparent;
-  }
-  .grid-bg {
-    background-image: linear-gradient(
-        to right,
-        rgba(139, 92, 246, 0.06) 1px,
-        transparent 1px
-      ),
-      linear-gradient(to bottom, rgba(139, 92, 246, 0.06) 1px, transparent 1px);
-    background-size: 48px 48px;
+    @apply text-lime-300;
   }
 }
 

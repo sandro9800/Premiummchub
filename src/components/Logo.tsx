@@ -24,7 +24,7 @@ export function Logo({ className, showText = true, size = "md" }: LogoProps) {
       )}
     >
       <div
-        className="relative flex items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-violet-700 shadow-lg shadow-violet-500/30 ring-1 ring-white/10 group-hover:shadow-violet-500/50 transition-shadow overflow-hidden"
+        className="relative flex items-center justify-center rounded-xl bg-violet-600 shadow-lg shadow-violet-500/20 ring-1 ring-white/10 group-hover:shadow-violet-500/50 transition-shadow overflow-hidden"
         style={{ width: dim + 6, height: dim + 6 }}
       >
         {customLogo ? (
@@ -40,7 +40,6 @@ export function Logo({ className, showText = true, size = "md" }: LogoProps) {
               strokeWidth={2.4}
               className="text-white drop-shadow-sm"
             />
-            <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/20 to-transparent" />
           </>
         )}
       </div>
@@ -75,7 +74,7 @@ function BrandText({ name, className }: { name: string; className?: string }) {
     return (
       <span className={className}>
         {parts[0]}{" "}
-        <span className="bg-gradient-to-r from-violet-400 to-emerald-300 bg-clip-text text-transparent">
+        <span className="text-lime-300">
           {parts[1]}
         </span>
       </span>
@@ -87,7 +86,7 @@ function BrandText({ name, className }: { name: string; className?: string }) {
   return (
     <span className={className}>
       {head}{" "}
-      <span className="bg-gradient-to-r from-violet-400 to-emerald-300 bg-clip-text text-transparent">
+      <span className="text-lime-300">
         {accent}
       </span>{" "}
       {tail}

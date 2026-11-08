@@ -33,9 +33,9 @@ export function ItemCard({ item, featured }: Props) {
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
         ) : (
-          <div className="h-full w-full bg-gradient-to-br from-ink-700 to-ink-900" />
+          <div className="h-full w-full bg-ink-800" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/30 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-ink-950/70" />
         <div className="absolute top-3 left-3 flex items-center gap-1.5">
           <span
             className={cn(
