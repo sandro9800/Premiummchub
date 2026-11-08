@@ -444,7 +444,10 @@ function adminCreds() {
 function signingKey() {
   const { pass } = adminCreds();
   const secret =
-    process.env.SESSION_SECRET || process.env.UPSTASH_REDIS_REST_TOKEN || "";
+    process.env.SESSION_SECRET ||
+    process.env.UPSTASH_REDIS_REST_TOKEN ||
+    process.env.KV_REST_API_TOKEN ||
+    "";
   return pass && secret ? `${secret}:${pass}` : "";
 }
 
