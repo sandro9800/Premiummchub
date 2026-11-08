@@ -39,10 +39,6 @@ export function HomePage() {
   return (
     <div className="relative">
       <section className="relative overflow-hidden border-b border-white/[0.06]">
-        <div className="absolute inset-0 grid-bg opacity-20" />
-        <div className="absolute -top-40 left-1/2 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-lime-300/[0.07] blur-[120px]" />
-        <div className="absolute top-40 right-0 h-72 w-72 rounded-full bg-emerald-400/[0.06] blur-[100px]" />
-
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 pt-16 pb-20 md:pt-24 md:pb-28">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-lime-300/20 bg-lime-300/[0.07] px-3 py-1 text-xs font-medium text-lime-200">
@@ -172,8 +168,7 @@ export function HomePage() {
       )}
 
       <section className="mx-auto max-w-7xl px-4 sm:px-6 pb-20">
-        <div className="relative overflow-hidden rounded-3xl border border-lime-300/15 bg-gradient-to-br from-lime-300/[0.08] via-ink-900 to-emerald-400/[0.04] p-8 md:p-12">
-          <div className="absolute inset-0 grid-bg opacity-30" />
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-ink-900 p-8 md:p-12">
           <div className="relative max-w-2xl">
             <h3 className="text-2xl md:text-3xl font-bold text-white">
               Want your client on the hub?
@@ -252,18 +247,15 @@ function CategoryCard({
   accent: "violet" | "emerald" | "amber";
 }) {
   const accents = {
-    violet: "from-violet-500/15 to-violet-500/0 text-violet-300 border-violet-500/20",
-    emerald: "from-emerald-500/15 to-emerald-500/0 text-emerald-300 border-emerald-500/20",
-    amber: "from-amber-500/15 to-amber-500/0 text-amber-300 border-amber-500/20",
+    violet: "text-lime-300 border-lime-300/20",
+    emerald: "text-slate-300 border-white/10",
+    amber: "text-slate-300 border-white/10",
   } as const;
   return (
     <Link
       to={to}
       className={`group relative overflow-hidden rounded-2xl border bg-ink-800/60 p-6 backdrop-blur-xl transition-all hover:-translate-y-1 ${accents[accent]}`}
     >
-      <div
-        className={`absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gradient-to-br blur-2xl ${accents[accent]}`}
-      />
       <div className="relative">
         <div
           className={`flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 ${accents[accent].split(" ").pop()}`}

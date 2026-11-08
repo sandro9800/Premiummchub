@@ -15,10 +15,9 @@ export function FullScreenLoader({ message }: { message?: string }) {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-ink-900">
       <div className="relative">
-        <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-violet-500 to-violet-700 shadow-2xl shadow-violet-500/40 flex items-center justify-center">
+        <div className="h-16 w-16 rounded-2xl bg-violet-600 shadow-2xl shadow-violet-500/20 flex items-center justify-center">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/30 border-t-white" />
         </div>
-        <div className="absolute inset-0 rounded-2xl bg-violet-500/20 blur-xl animate-pulse" />
       </div>
       <p className="mt-6 text-sm text-slate-400">
         {message || "Loading Premium MC Hub…"}
@@ -70,16 +69,16 @@ export function StatCard({
   accent?: "violet" | "emerald" | "amber" | "rose";
 }) {
   const accents = {
-    violet: "from-violet-500/20 to-violet-500/0 text-violet-300",
-    emerald: "from-emerald-500/20 to-emerald-500/0 text-emerald-300",
-    amber: "from-amber-500/20 to-amber-500/0 text-amber-300",
-    rose: "from-rose-500/20 to-rose-500/0 text-rose-300",
+    violet: "text-lime-300",
+    emerald: "text-emerald-300",
+    amber: "text-amber-300",
+    rose: "text-rose-300",
   } as const;
   return (
     <div className="relative overflow-hidden rounded-2xl glass p-5">
       <div
         className={cn(
-          "absolute -top-10 -right-10 h-32 w-32 rounded-full bg-gradient-to-br blur-2xl",
+          "absolute -top-10 -right-10 h-32 w-32 rounded-full opacity-10", 
           accents[accent],
         )}
       />
