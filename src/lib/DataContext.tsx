@@ -17,6 +17,7 @@ import type {
 } from "@/types";
 import { DEFAULT_SETTINGS } from "@/types";
 import {
+  deleteItem as deleteItemFromApi,
   getAllData,
   initStorage,
   logDownload,
@@ -96,8 +97,20 @@ export function DataProvider({ children }: { children: ReactNode }) {
         if (mounted) setLoading(false);
       }
     })();
+
+    const channel = typeof window !== "undefined" && "BroadcastChannel" in window
+      ? new BroadcastChannel("pmch-data-sync")
+      : null;
+    const sync = () => { void refresh(); };
+    channel?.addEventListener("message", sync);
+    window.addEventListener("focus", sync);
+    const interval = window.setInterval(sync, 15000);
     return () => {
       mounted = false;
+      channel?.removeEventListener("message", sync);
+      channel?.close();
+      window.removeEventListener("focus", sync);
+      window.clearInterval(interval);
     };
   }, [refresh]);
 
@@ -129,9 +142,14 @@ export function DataProvider({ children }: { children: ReactNode }) {
       await refresh();
     },
     async deleteItem(id) {
-      const next = items.filter((i) => i.id !== id);
-      await saveItems(next);
+      await deleteItemFromApi(id);
+      setItems((current) => current.filter((item) => item.id !== id));
       await refresh();
+      if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+        const channel = new BroadcastChannel("pmch-data-sync");
+        channel.postMessage({ type: "items-changed", deletedId: id });
+        channel.close();
+      }
     },
     async saveAllItems(next) {
       await saveItems(next);

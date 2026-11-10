@@ -15,6 +15,7 @@ async function apiFetch(action: string, body?: unknown): Promise<any> {
   const res = await fetch(`/api/data?action=${encodeURIComponent(action)}`, {
     method: body !== undefined ? "POST" : "GET",
     headers,
+    cache: "no-store",
     body: body !== undefined ? JSON.stringify(body || {}) : undefined,
   });
   // An expired or invalid session: drop it so the admin is sent to log in again.
@@ -65,6 +66,10 @@ export async function getItems(): Promise<Item[]> {
 
 export async function saveItems(items: Item[]): Promise<void> {
   await apiFetch("items", { data: items });
+}
+
+export async function deleteItem(id: string): Promise<void> {
+  await apiFetch("delete-item", { id });
 }
 
 export async function getMedia(): Promise<MediaItem[]> {
