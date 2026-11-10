@@ -4,7 +4,7 @@ export function Spinner({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "inline-block h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-violet-400",
+        "inline-block h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-cyan-400",
         className,
       )}
     />
@@ -15,7 +15,7 @@ export function FullScreenLoader({ message }: { message?: string }) {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-ink-900">
       <div className="relative">
-        <div className="h-16 w-16 rounded-2xl bg-violet-600 shadow-2xl shadow-violet-500/20 flex items-center justify-center">
+        <div className="h-16 w-16 rounded-2xl bg-cyan-600 shadow-2xl shadow-cyan-500/20 flex items-center justify-center">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/30 border-t-white" />
         </div>
       </div>
@@ -40,7 +40,7 @@ export function EmptyState({
   return (
     <div className="rounded-2xl border border-dashed border-white/10 bg-ink-900/40 p-10 text-center">
       {icon && (
-        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-violet-500/10 text-violet-300">
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-300">
           {icon}
         </div>
       )}
@@ -60,16 +60,16 @@ export function StatCard({
   value,
   hint,
   icon,
-  accent = "violet",
+  accent = "cyan",
 }: {
   label: string;
   value: string | number;
   hint?: string;
   icon?: React.ReactNode;
-  accent?: "violet" | "emerald" | "amber" | "rose";
+  accent?: "cyan" | "emerald" | "amber" | "rose";
 }) {
   const accents = {
-    violet: "text-lime-300",
+    cyan: "text-lime-300",
     emerald: "text-emerald-300",
     amber: "text-amber-300",
     rose: "text-rose-300",

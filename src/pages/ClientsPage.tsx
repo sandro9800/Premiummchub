@@ -30,12 +30,12 @@ export function ClientsPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
       <header className="mb-8">
-        <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-200">
+        <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs font-medium text-cyan-200">
           <Gamepad2 size={12} /> {clients.length} client
           {clients.length === 1 ? "" : "s"} available
         </div>
         <h1 className="mt-3 text-3xl md:text-4xl font-extrabold tracking-tight text-white">
-          Minecraft <span className="gradient-text">Clients</span>
+          Minecraft <span className="accent-text">Clients</span>
         </h1>
         <p className="mt-2 text-slate-400 max-w-2xl">
           All-in-one PvP, free and premium clients. Each one is reviewed and

@@ -24,7 +24,7 @@ export function Logo({ className, showText = true, size = "md" }: LogoProps) {
       )}
     >
       <div
-        className="relative flex items-center justify-center rounded-xl bg-violet-600 shadow-lg shadow-violet-500/20 ring-1 ring-white/10 group-hover:shadow-violet-500/50 transition-shadow overflow-hidden"
+        className="relative flex items-center justify-center rounded-xl bg-cyan-600 shadow-lg shadow-cyan-500/20 ring-1 ring-white/10 group-hover:shadow-cyan-500/50 transition-shadow overflow-hidden"
         style={{ width: dim + 6, height: dim + 6 }}
       >
         {customLogo ? (
@@ -61,7 +61,7 @@ export function Logo({ className, showText = true, size = "md" }: LogoProps) {
 }
 
 /**
- * Render the site name with the middle word highlighted as a gradient.
+ * Render the site name with the middle word highlighted with the brand accent.
  * Works for any name length (1, 2, 3+ words) without fragile splits.
  */
 function BrandText({ name, className }: { name: string; className?: string }) {

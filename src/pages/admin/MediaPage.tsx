@@ -130,7 +130,7 @@ export function MediaPage() {
           {media.map((m) => (
             <div
               key={m.id}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-ink-800/60 hover:border-violet-500/40 transition-colors"
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-ink-800/60 hover:border-cyan-500/40 transition-colors"
             >
               <button
                 onClick={() => setPreview(m)}
@@ -153,7 +153,7 @@ export function MediaPage() {
               <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
                   onClick={() => copy(m)}
-                  className="p-1.5 rounded-md bg-black/70 text-white hover:bg-violet-500"
+                  className="p-1.5 rounded-md bg-black/70 text-white hover:bg-cyan-500"
                   title="Copy data URL"
                 >
                   <Copy size={12} />

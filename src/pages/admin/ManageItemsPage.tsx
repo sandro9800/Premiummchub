@@ -309,7 +309,7 @@ export function ManageItemsPage() {
                         className={cn(
                           "px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border",
                           i.type === "client" &&
-                            "bg-violet-500/15 text-violet-300 border-violet-500/30",
+                            "bg-cyan-500/15 text-cyan-300 border-cyan-500/30",
                           i.type === "mod" &&
                             "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
                           i.type === "macro" &&
@@ -349,7 +349,7 @@ export function ManageItemsPage() {
                           href={loader.loaderUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 rounded-md border border-violet-500/30 bg-violet-500/10 px-2 py-1 text-[11px] font-medium text-violet-200 hover:bg-violet-500/20 max-w-[180px]"
+                          className="inline-flex items-center gap-1.5 rounded-md border border-cyan-500/30 bg-cyan-500/10 px-2 py-1 text-[11px] font-medium text-cyan-200 hover:bg-cyan-500/20 max-w-[180px]"
                           title={loader.loaderUrl}
                         >
                           <LoaderIcon size={11} />
@@ -434,7 +434,7 @@ export function ManageItemsPage() {
                         </IconBtn>
                         <Link
                           to={`/admin/edit/${i.type}/${i.id}`}
-                          className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-slate-300 hover:bg-violet-500/20 hover:text-violet-200 border border-white/10"
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/5 text-slate-300 hover:bg-cyan-500/20 hover:text-cyan-200 border border-white/10"
                           title="Edit"
                         >
                           <Edit3 size={14} />
@@ -499,12 +499,12 @@ function IconBtn({
   children: React.ReactNode;
   onClick: () => void;
   title: string;
-  tone: "violet" | "emerald" | "amber" | "rose" | "slate";
+  tone: "cyan" | "emerald" | "amber" | "rose" | "slate";
   disabled?: boolean;
 }) {
   const tones = {
-    violet:
-      "bg-violet-500/10 text-violet-200 border-violet-500/30 hover:bg-violet-500/20",
+    cyan:
+      "bg-cyan-500/10 text-cyan-200 border-cyan-500/30 hover:bg-cyan-500/20",
     emerald:
       "bg-emerald-500/10 text-emerald-200 border-emerald-500/30 hover:bg-emerald-500/20",
     amber:

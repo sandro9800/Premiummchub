@@ -97,7 +97,7 @@ export function ImageDropzone({
             <button
               type="button"
               onClick={() => fileRef.current?.click()}
-              className="inline-flex items-center gap-1.5 rounded-md bg-black/70 px-2.5 py-1 text-xs text-white hover:bg-violet-500/80 backdrop-blur"
+              className="inline-flex items-center gap-1.5 rounded-md bg-black/70 px-2.5 py-1 text-xs text-white hover:bg-cyan-500/80 backdrop-blur"
             >
               <Upload size={12} /> Replace
             </button>
@@ -127,11 +127,11 @@ export function ImageDropzone({
           className={cn(
             "flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-6 text-center transition-colors",
             dragOver
-              ? "border-violet-400 bg-violet-500/10"
-              : "border-white/10 bg-ink-900/40 hover:border-violet-500/40 hover:bg-violet-500/5",
+              ? "border-cyan-400 bg-cyan-500/10"
+              : "border-white/10 bg-ink-900/40 hover:border-cyan-500/40 hover:bg-cyan-500/5",
           )}
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-500/10 text-violet-300">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-300">
             <ImageIcon size={18} />
           </div>
           <div>
@@ -162,7 +162,7 @@ export function ImageDropzone({
           <button
             type="button"
             onClick={() => setUrlMode((s) => !s)}
-            className="text-slate-500 hover:text-violet-300"
+            className="text-slate-500 hover:text-cyan-300"
           >
             {urlMode ? "Hide URL input" : "…or paste a URL instead"}
           </button>

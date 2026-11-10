@@ -103,10 +103,10 @@ export function ItemDetailPage() {
                 className="h-full w-full object-cover"
               />
             ) : (
-              <div className="h-full w-full bg-gradient-to-br from-ink-700 to-ink-900" />
+              <div className="h-full w-full bg-ink-800" />
             )}
             <div className="absolute top-3 left-3 flex items-center gap-2">
-              <span className="badge-violet">{item.type}</span>
+              <span className="badge-cyan">{item.type}</span>
               {item.featured && (
                 <span className="badge-amber">
                   <Star size={10} className="fill-current" /> Featured
@@ -130,7 +130,7 @@ export function ItemDetailPage() {
                   onClick={() => setActive(i)}
                   className={`relative aspect-square overflow-hidden rounded-lg border ${
                     active === i
-                      ? "border-violet-500"
+                      ? "border-cyan-500"
                       : "border-white/10 hover:border-white/30"
                   }`}
                 >
@@ -172,7 +172,7 @@ export function ItemDetailPage() {
                   <Link
                     to={`/search?q=${encodeURIComponent(t)}`}
                     key={t}
-                    className="badge-slate hover:border-violet-500/40 hover:text-violet-200 transition-colors"
+                    className="badge-slate hover:border-cyan-500/40 hover:text-cyan-200 transition-colors"
                   >
                     {t}
                   </Link>

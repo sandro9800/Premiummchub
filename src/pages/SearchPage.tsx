@@ -62,7 +62,7 @@ export function SearchPage() {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
       <header className="mb-6">
         <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">
-          <span className="gradient-text">Search</span> the catalog
+          <span className="accent-text">Search</span> the catalog
         </h1>
         <p className="mt-2 text-slate-400 max-w-2xl">
           Find anything in the hub — clients, mods, macros, or authors.
@@ -84,7 +84,7 @@ export function SearchPage() {
               onClick={() => setType(b.v)}
               className={
                 type === b.v
-                  ? "rounded-lg bg-violet-500/15 border border-violet-500/40 text-violet-200 px-3 py-1.5 text-sm"
+                  ? "rounded-lg bg-cyan-500/15 border border-cyan-500/40 text-cyan-200 px-3 py-1.5 text-sm"
                   : "rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-white px-3 py-1.5 text-sm"
               }
             >

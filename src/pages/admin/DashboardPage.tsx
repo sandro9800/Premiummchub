@@ -50,7 +50,7 @@ export function DashboardPage() {
           value={items.length}
           hint={`${publishedItems.length} published`}
           icon={<Boxes size={18} />}
-          accent="violet"
+          accent="cyan"
         />
         <StatCard
           label="Downloads Today"
@@ -85,7 +85,7 @@ export function DashboardPage() {
             icon={<Gamepad2 size={18} />}
             title="New Client"
             desc="Add a new PvP or all-in-one client."
-            accent="violet"
+            accent="cyan"
           />
           <QuickAddCard
             to="/admin/edit/mod"
@@ -107,11 +107,11 @@ export function DashboardPage() {
       <section>
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-lg font-semibold text-white inline-flex items-center gap-2">
-            <Gamepad2 size={16} className="text-violet-300" /> Clients
+            <Gamepad2 size={16} className="text-cyan-300" /> Clients
           </h2>
           <Link
             to="/admin/clients"
-            className="text-sm text-violet-300 hover:text-violet-200"
+            className="text-sm text-cyan-300 hover:text-cyan-200"
           >
             Manage all →
           </Link>
@@ -126,7 +126,7 @@ export function DashboardPage() {
               <Link
                 key={c.id}
                 to={`/admin/edit/${c.type}/${c.id}`}
-                className="group flex items-center gap-3 rounded-xl border border-white/10 bg-ink-800/60 p-3 hover:border-violet-500/40 transition-colors"
+                className="group flex items-center gap-3 rounded-xl border border-white/10 bg-ink-800/60 p-3 hover:border-cyan-500/40 transition-colors"
               >
                 {c.thumbnail ? (
                   <img
@@ -240,10 +240,10 @@ function QuickAddCard({
   icon: React.ReactNode;
   title: string;
   desc: string;
-  accent: "violet" | "emerald" | "amber";
+  accent: "cyan" | "emerald" | "amber";
 }) {
   const accents = {
-    violet: "from-violet-500/15 to-violet-500/0 text-violet-300",
+    cyan: "from-cyan-500/15 to-cyan-500/0 text-cyan-300",
     emerald: "from-emerald-500/15 to-emerald-500/0 text-emerald-300",
     amber: "from-amber-500/15 to-amber-500/0 text-amber-300",
   } as const;
@@ -253,7 +253,7 @@ function QuickAddCard({
       className="group relative overflow-hidden rounded-2xl glass p-5 hover:-translate-y-0.5 transition-transform"
     >
       <div
-        className={`absolute -top-10 -right-10 h-28 w-28 rounded-full bg-gradient-to-br blur-2xl ${accents[accent]}`}
+        className={`absolute -top-10 -right-10 h-28 w-28 rounded-full blur-2xl ${accents[accent]}`}
       />
       <div
         className={`flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 ${accents[accent].split(" ").pop()}`}

@@ -13,7 +13,7 @@ export default {
           600: "#25253a",
           500: "#34344f",
         },
-        violet: {
+        cyan: {
           450: "#8b5cf6",
         },
       },
@@ -37,7 +37,7 @@ export default {
         ],
       },
       backgroundImage: {
-        "grid-violet":
+        "grid-cyan":
           "linear-gradient(to right, rgba(139,92,246,0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(139,92,246,0.07) 1px, transparent 1px)",
         "radial-glow":
           "radial-gradient(ellipse at top, rgba(139,92,246,0.18), transparent 60%), radial-gradient(ellipse at bottom right, rgba(16,185,129,0.12), transparent 60%)",

@@ -36,7 +36,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               t.kind === "error" &&
                 "bg-rose-500/10 border-rose-500/30 text-rose-200",
               t.kind === "info" &&
-                "bg-violet-500/10 border-violet-500/30 text-violet-200",
+                "bg-cyan-500/10 border-cyan-500/30 text-cyan-200",
             )}
           >
             {t.kind === "success" && <CheckCircle2 size={15} />}

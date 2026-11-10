@@ -92,8 +92,8 @@ export function LogoUploader() {
             className={
               "flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-3 py-3 text-center transition-colors " +
               (dragOver
-                ? "border-violet-400 bg-violet-500/10"
-                : "border-white/10 bg-ink-900/40 hover:border-violet-500/40 hover:bg-violet-500/5")
+                ? "border-cyan-400 bg-cyan-500/10"
+                : "border-white/10 bg-ink-900/40 hover:border-cyan-500/40 hover:bg-cyan-500/5")
             }
           >
             <input
@@ -106,7 +106,7 @@ export function LogoUploader() {
                 e.target.value = "";
               }}
             />
-            <Upload size={16} className="text-violet-300" />
+            <Upload size={16} className="text-cyan-300" />
             <p className="mt-1 text-xs font-medium text-slate-200">
               {busy ? "Uploading…" : "Click or drop to upload logo"}
             </p>

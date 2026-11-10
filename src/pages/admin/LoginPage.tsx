@@ -38,14 +38,14 @@ export function LoginPage() {
 
   return (
     <div className="min-h-screen relative flex items-center justify-center px-4 grid-bg overflow-hidden">
-      <div className="absolute -top-32 left-1/2 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-violet-500/15 blur-[120px]" />
+      <div className="absolute -top-32 left-1/2 h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-cyan-500/15 blur-[120px]" />
       <div className="relative w-full max-w-md">
         <div className="mb-6 flex justify-center">
           <Logo size="lg" />
         </div>
-        <div className="card p-7 shadow-2xl shadow-violet-500/10">
+        <div className="card p-7 shadow-2xl shadow-cyan-500/10">
           <div className="flex items-center gap-2 mb-1">
-            <ShieldCheck size={16} className="text-violet-300" />
+            <ShieldCheck size={16} className="text-cyan-300" />
             <h1 className="text-xl font-bold text-white">Admin Login</h1>
           </div>
           <p className="text-sm text-slate-400 mb-5">

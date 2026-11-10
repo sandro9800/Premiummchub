@@ -10,7 +10,7 @@ interface Props {
 }
 
 const typeColors: Record<string, string> = {
-  client: "bg-violet-500/15 text-violet-300 border-violet-500/30",
+  client: "bg-cyan-500/15 text-cyan-300 border-cyan-500/30",
   mod: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
   macro: "bg-amber-500/15 text-amber-300 border-amber-500/30",
 };
@@ -20,8 +20,8 @@ export function ItemCard({ item, featured }: Props) {
     <Link
       to={`/${item.type}/${item.id}`}
       className={cn(
-        "group relative block rounded-2xl glass overflow-hidden transition-all duration-300 hover:border-violet-500/30 hover:-translate-y-1 hover:shadow-2xl hover:shadow-violet-500/10",
-        featured && "ring-1 ring-violet-500/20",
+        "group relative block rounded-2xl glass overflow-hidden transition-all duration-300 hover:border-cyan-500/30 hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/10",
+        featured && "ring-1 ring-cyan-500/20",
       )}
     >
       <div className="relative aspect-[16/9] overflow-hidden">
@@ -57,7 +57,7 @@ export function ItemCard({ item, featured }: Props) {
       </div>
       <div className="p-4">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="text-base font-semibold text-white line-clamp-1 group-hover:text-violet-300 transition-colors">
+          <h3 className="text-base font-semibold text-white line-clamp-1 group-hover:text-cyan-300 transition-colors">
             {item.name}
           </h3>
           <span className="text-[11px] font-mono text-slate-500 shrink-0">
@@ -69,7 +69,7 @@ export function ItemCard({ item, featured }: Props) {
         </p>
         <div className="mt-3 flex items-center justify-between text-[11px] text-slate-500">
           <span>by {item.author}</span>
-          <span className="inline-flex items-center gap-1 text-violet-300 opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="inline-flex items-center gap-1 text-cyan-300 opacity-0 group-hover:opacity-100 transition-opacity">
             View <ArrowRight size={12} />
           </span>
         </div>

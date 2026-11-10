@@ -59,7 +59,7 @@ export function AnalyticsPage() {
       tally[d.itemType] = (tally[d.itemType] || 0) + 1;
     });
     return [
-      { name: "Clients", value: tally.client || 0, color: "#8b5cf6" },
+      { name: "Clients", value: tally.client || 0, color: "#06b6d4" },
       { name: "Mods", value: tally.mod || 0, color: "#10b981" },
       { name: "Macros", value: tally.macro || 0, color: "#f59e0b" },
     ].filter((x) => x.value > 0);
@@ -80,7 +80,7 @@ export function AnalyticsPage() {
           value={formatNumber(today)}
           hint={`Yesterday: ${formatNumber(yesterday)}`}
           icon={<Calendar size={18} />}
-          accent="violet"
+          accent="cyan"
         />
         <StatCard
           label="This Week"
@@ -115,8 +115,8 @@ export function AnalyticsPage() {
               <LineChart data={series}>
                 <defs>
                   <linearGradient id="lineFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.5} />
-                    <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0} />
+                    <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.5} />
+                    <stop offset="100%" stopColor="#06b6d4" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
@@ -141,9 +141,9 @@ export function AnalyticsPage() {
                 <Line
                   type="monotone"
                   dataKey="downloads"
-                  stroke="#8b5cf6"
+                  stroke="#06b6d4"
                   strokeWidth={2.5}
-                  dot={{ r: 2.5, fill: "#8b5cf6" }}
+                  dot={{ r: 2.5, fill: "#06b6d4" }}
                   activeDot={{ r: 5 }}
                 />
               </LineChart>
@@ -227,7 +227,7 @@ export function AnalyticsPage() {
                       key={i}
                       fill={
                         it.type === "client"
-                          ? "#8b5cf6"
+                          ? "#06b6d4"
                           : it.type === "mod"
                             ? "#10b981"
                             : "#f59e0b"

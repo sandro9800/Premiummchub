@@ -59,7 +59,7 @@ export function ModsAndMacrosPage() {
           {list.length === 1 ? "" : "s"} available
         </div>
         <h1 className="mt-3 text-3xl md:text-4xl font-extrabold tracking-tight text-white">
-          Mods & <span className="gradient-text">Macros</span>
+          Mods & <span className="accent-text">Macros</span>
         </h1>
         <p className="mt-2 text-slate-400 max-w-2xl">
           Performance mods, utilities, and PvP macros. Filter by category and
@@ -81,7 +81,7 @@ export function ModsAndMacrosPage() {
               onClick={() => setType(b.v)}
               className={
                 type === b.v
-                  ? "inline-flex items-center gap-1.5 rounded-lg bg-violet-500/15 border border-violet-500/40 text-violet-200 px-3 py-1.5 text-sm"
+                  ? "inline-flex items-center gap-1.5 rounded-lg bg-cyan-500/15 border border-cyan-500/40 text-cyan-200 px-3 py-1.5 text-sm"
                   : "inline-flex items-center gap-1.5 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-white px-3 py-1.5 text-sm"
               }
             >
@@ -158,7 +158,7 @@ export function ModsAndMacrosPage() {
                   onClick={() => setPage(n)}
                   className={
                     n === page
-                      ? "h-9 w-9 rounded-lg bg-violet-500 text-white text-sm font-bold"
+                      ? "h-9 w-9 rounded-lg bg-cyan-500 text-white text-sm font-bold"
                       : "h-9 w-9 rounded-lg bg-white/5 text-slate-300 hover:bg-white/10 text-sm"
                   }
                 >

@@ -46,7 +46,7 @@ export function HomePage() {
             </div>
             <h1 className="mt-5 text-4xl md:text-7xl font-semibold tracking-[-0.04em] leading-[0.98] text-balance">
               <span className="text-white">Tools that make</span>{" "}
-              <span className="gradient-text">every session better.</span>
+              <span className="accent-text">every session better.</span>
             </h1>
             <p className="mt-5 text-base md:text-lg text-slate-400 max-w-2xl text-balance">
               Discover curated clients, mods, and macros — handpicked,
@@ -68,7 +68,7 @@ export function HomePage() {
               value={publishedItems.length}
               hint={`${items.length} in catalog`}
               icon={<Boxes size={18} />}
-              accent="violet"
+              accent="cyan"
             />
             <StatCard
               label="Downloads"
@@ -89,7 +89,7 @@ export function HomePage() {
               value={modsCount + macrosCount}
               hint={`${modsCount} mods · ${macrosCount} macros`}
               icon={<Wrench size={18} />}
-              accent="violet"
+              accent="cyan"
             />
           </div>
         </div>
@@ -102,7 +102,7 @@ export function HomePage() {
             icon={<Gamepad2 size={20} />}
             title="Minecraft Clients"
             desc="Full PvP, all-in-one, and free clients — ready to install."
-            accent="violet"
+            accent="cyan"
             count={clientsCount}
           />
           <CategoryCard
@@ -209,7 +209,7 @@ function Section({
     <section className="mx-auto max-w-7xl px-4 sm:px-6 py-14">
       <div className="flex items-end justify-between gap-3 mb-6">
         <div>
-          <div className="flex items-center gap-2 text-violet-300">
+          <div className="flex items-center gap-2 text-cyan-300">
             {icon}
             <h2 className="section-title">{title}</h2>
           </div>
@@ -220,7 +220,7 @@ function Section({
         {linkTo && (
           <Link
             to={linkTo}
-            className="text-sm text-violet-300 hover:text-violet-200 inline-flex items-center gap-1"
+            className="text-sm text-cyan-300 hover:text-cyan-200 inline-flex items-center gap-1"
           >
             View all <ArrowRight size={13} />
           </Link>
@@ -244,10 +244,10 @@ function CategoryCard({
   title: string;
   desc: string;
   count: number;
-  accent: "violet" | "emerald" | "amber";
+  accent: "cyan" | "emerald" | "amber";
 }) {
   const accents = {
-    violet: "text-lime-300 border-lime-300/20",
+    cyan: "text-lime-300 border-lime-300/20",
     emerald: "text-slate-300 border-white/10",
     amber: "text-slate-300 border-white/10",
   } as const;

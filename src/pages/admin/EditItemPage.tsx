@@ -364,7 +364,7 @@ export function EditItemPage() {
                       "mt-2 inline-flex items-center gap-1.5 text-[11px] cursor-pointer " +
                       (uploadingGallery
                         ? "text-slate-500 pointer-events-none"
-                        : "text-violet-300 hover:text-violet-200")
+                        : "text-cyan-300 hover:text-cyan-200")
                     }
                   >
                     <ImageIcon size={12} />
@@ -425,7 +425,7 @@ export function EditItemPage() {
                         else set("gallery", [...item.gallery, u]);
                         toast.push("Image attached", "info");
                       }}
-                      className="aspect-square overflow-hidden rounded-md border border-white/10 hover:border-violet-500"
+                      className="aspect-square overflow-hidden rounded-md border border-white/10 hover:border-cyan-500"
                     >
                       <img
                         src={u}
@@ -498,8 +498,8 @@ export function EditItemPage() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div className="rounded-lg border border-violet-500/20 bg-violet-500/5 p-2.5">
-                      <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-violet-300 mb-1.5">
+                    <div className="rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-2.5">
+                      <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-cyan-300 mb-1.5">
                         <LoaderIcon size={12} /> Loader
                       </div>
                       <input
@@ -642,7 +642,7 @@ export function EditItemPage() {
                 {item.tags.map((t) => (
                   <span
                     key={t}
-                    className="badge-violet cursor-pointer"
+                    className="badge-cyan cursor-pointer"
                     onClick={() => removeTag(t)}
                     title="Click to remove"
                   >
@@ -689,7 +689,7 @@ function Toggle({
       className={
         "flex w-full items-center justify-between rounded-lg border px-3 py-2 text-sm transition-colors " +
         (value
-          ? "border-violet-500/30 bg-violet-500/10 text-violet-200"
+          ? "border-cyan-500/30 bg-cyan-500/10 text-cyan-200"
           : "border-white/10 bg-white/5 text-slate-300 hover:bg-white/10")
       }
     >
@@ -699,7 +699,7 @@ function Toggle({
       <span
         className={
           "h-5 w-9 rounded-full p-0.5 transition-colors " +
-          (value ? "bg-violet-500" : "bg-ink-700")
+          (value ? "bg-cyan-500" : "bg-ink-700")
         }
       >
         <span

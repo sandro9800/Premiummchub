@@ -53,7 +53,7 @@ export function AdminLayout() {
                 cn(
                   "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-violet-500/15 text-violet-200 border border-violet-500/30"
+                    ? "bg-cyan-500/15 text-cyan-200 border border-cyan-500/30"
                     : "text-slate-400 hover:bg-white/5 hover:text-white border border-transparent",
                 )
               }
