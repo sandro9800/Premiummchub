@@ -18,8 +18,16 @@ async function apiFetch(action: string, body?: unknown): Promise<any> {
     cache: "no-store",
     body: body !== undefined ? JSON.stringify(body || {}) : undefined,
   });
-  // An expired or invalid session: drop it so the admin is sent to log in again.
-  if (res.status === 401 && token) logout();
+  const requiresAdmin =
+    action === "downloads" ||
+    action === "analytics" ||
+    action === "reset" ||
+    action === "delete-item" ||
+    (body !== undefined &&
+      ["items", "media", "downloads", "analytics", "settings"].includes(action));
+  // Public reads can fail independently of the session; only an admin-only
+  // endpoint rejecting the token should sign the user out.
+  if (res.status === 401 && token && requiresAdmin) logout();
   if (!res.ok) {
     let detail = `${res.status} ${res.statusText}`;
     try {
