@@ -1,9 +1,6 @@
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
-  Boxes,
-  Cpu,
-  Download,
   Gamepad2,
   Layers,
   Sparkles,
@@ -12,19 +9,10 @@ import {
 } from "lucide-react";
 import { useData } from "@/lib/DataContext";
 import { ItemCard } from "@/components/ItemCard";
-import { StatCard } from "@/components/UI";
-import { formatNumber } from "@/lib/utils";
 
 export function HomePage() {
-  const { items, publishedItems } = useData();
-  const totalDownloads = publishedItems.reduce(
-    (sum, i) => sum + (i.downloads?.total || 0),
-    0,
-  );
+  const { publishedItems } = useData();
   const featured = publishedItems.filter((i) => i.featured).slice(0, 6);
-  const popular = [...publishedItems]
-    .sort((a, b) => (b.downloads?.total || 0) - (a.downloads?.total || 0))
-    .slice(0, 6);
   const recent = [...publishedItems]
     .sort(
       (a, b) =>
@@ -42,15 +30,14 @@ export function HomePage() {
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 pt-16 pb-20 md:pt-24 md:pb-28">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-lime-300/20 bg-lime-300/[0.07] px-3 py-1 text-xs font-medium text-lime-200">
-              <span className="h-1.5 w-1.5 rounded-full bg-lime-300 shadow-[0_0_10px_rgba(190,242,100,0.9)]" /> Live catalog · updated daily
+              <span className="h-1.5 w-1.5 rounded-full bg-lime-300 shadow-[0_0_10px_rgba(190,242,100,0.9)]" /> Premium MC Hub
             </div>
             <h1 className="mt-5 text-4xl md:text-7xl font-semibold tracking-[-0.04em] leading-[0.98] text-balance">
               <span className="text-white">Tools that make</span>{" "}
               <span className="gradient-text">every session better.</span>
             </h1>
             <p className="mt-5 text-base md:text-lg text-slate-400 max-w-2xl text-balance">
-              Discover curated clients, mods, and macros — handpicked,
-              beautifully documented, and instantly downloadable.
+              Browse Minecraft clients, mods, and macros.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link to="/clients" className="btn-primary h-11 px-5">
@@ -62,36 +49,6 @@ export function HomePage() {
             </div>
           </div>
 
-          <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-3">
-            <StatCard
-              label="Total Items"
-              value={publishedItems.length}
-              hint={`${items.length} in catalog`}
-              icon={<Boxes size={18} />}
-              accent="violet"
-            />
-            <StatCard
-              label="Downloads"
-              value={formatNumber(totalDownloads)}
-              hint={`across ${publishedItems.length} items`}
-              icon={<Download size={18} />}
-              accent="emerald"
-            />
-            <StatCard
-              label="Clients"
-              value={clientsCount}
-              hint="PvP & utility"
-              icon={<Gamepad2 size={18} />}
-              accent="amber"
-            />
-            <StatCard
-              label="Mods + Macros"
-              value={modsCount + macrosCount}
-              hint={`${modsCount} mods · ${macrosCount} macros`}
-              icon={<Wrench size={18} />}
-              accent="violet"
-            />
-          </div>
         </div>
       </section>
 
@@ -139,25 +96,11 @@ export function HomePage() {
         </Section>
       )}
 
-      {popular.length > 0 && (
-        <Section
-          title="Most Popular"
-          subtitle="What the community downloads the most."
-          icon={<Download size={16} />}
-        >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {popular.map((i) => (
-              <ItemCard key={i.id} item={i} />
-            ))}
-          </div>
-        </Section>
-      )}
-
       {recent.length > 0 && (
         <Section
           title="Recently Updated"
           subtitle="Fresh releases and version bumps."
-          icon={<Cpu size={16} />}
+          icon={<Sparkles size={16} />}
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {recent.map((i) => (
@@ -174,8 +117,7 @@ export function HomePage() {
               Want your client on the hub?
             </h3>
             <p className="mt-3 text-slate-300/80">
-              Apply through the admin panel to publish your client, mod, or
-              macro. Everything is reviewed and stored securely in the cloud.
+              Add clients, mods, and macros to your catalog from the admin panel.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               <Link to="/search" className="btn-primary">

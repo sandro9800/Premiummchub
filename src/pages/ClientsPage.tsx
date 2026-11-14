@@ -5,12 +5,12 @@ import { EmptyState, Spinner } from "@/components/UI";
 import { Filter, Gamepad2, Search, X } from "lucide-react";
 import type { Item } from "@/types";
 
-type Sort = "popular" | "recent" | "name";
+type Sort = "recent" | "name";
 
 export function ClientsPage() {
   const { publishedItems, loading } = useData();
   const [q, setQ] = useState("");
-  const [sort, setSort] = useState<Sort>("popular");
+  const [sort, setSort] = useState<Sort>("recent");
 
   const clients = useMemo(() => {
     let list = publishedItems.filter((i) => i.type === "client");
@@ -38,8 +38,7 @@ export function ClientsPage() {
           Minecraft <span className="gradient-text">Clients</span>
         </h1>
         <p className="mt-2 text-slate-400 max-w-2xl">
-          All-in-one PvP, free and premium clients. Each one is reviewed and
-          tested by our community.
+          Browse published Minecraft clients.
         </p>
       </header>
 
@@ -72,8 +71,7 @@ export function ClientsPage() {
             value={sort}
             onChange={(e) => setSort(e.target.value as Sort)}
           >
-            <option value="popular">Most Popular</option>
-            <option value="recent">Recently Updated</option>
+              <option value="recent">Recently Updated</option>
             <option value="name">Name (A-Z)</option>
           </select>
         </div>
@@ -106,9 +104,7 @@ export function ClientsPage() {
 
 function sortList(list: Item[], sort: Sort): Item[] {
   const arr = [...list];
-  if (sort === "popular") {
-    arr.sort((a, b) => (b.downloads?.total || 0) - (a.downloads?.total || 0));
-  } else if (sort === "recent") {
+  if (sort === "recent") {
     arr.sort(
       (a, b) =>
         new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),

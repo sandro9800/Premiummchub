@@ -344,15 +344,36 @@ const DEFAULT_SEED = {
   analytics: [],
 };
 
+const DEMO_ITEM_IDS = new Set([
+  "item_lunar_client",
+  "item_badlion_client",
+  "item_futurium_client",
+  "item_keystrokes_mod",
+  "item_optifine_hd",
+  "item_sodium_mod",
+  "item_autoclick_macro",
+  "item_bedwars_macro",
+]);
+
 async function ensureSeed(redis) {
   const initialized = await redis.get(KEYS.initialized);
-  if (initialized) return;
-  await redis.set(KEYS.items, DEFAULT_SEED.items);
-  await redis.set(KEYS.media, DEFAULT_SEED.media);
-  await redis.set(KEYS.settings, DEFAULT_SEED.settings);
-  await redis.set(KEYS.downloads, DEFAULT_SEED.downloads);
-  await redis.set(KEYS.analytics, DEFAULT_SEED.analytics);
-  await redis.set(KEYS.initialized, true);
+  if (!initialized) {
+    await redis.set(KEYS.items, []);
+    await redis.set(KEYS.media, DEFAULT_SEED.media);
+    await redis.set(KEYS.settings, DEFAULT_SEED.settings);
+    await redis.set(KEYS.downloads, DEFAULT_SEED.downloads);
+    await redis.set(KEYS.analytics, DEFAULT_SEED.analytics);
+    await redis.set(KEYS.initialized, true);
+    return;
+  }
+
+  const existingItems = await redis.get(KEYS.items);
+  if (Array.isArray(existingItems)) {
+    const cleanedItems = existingItems.filter((item) => !DEMO_ITEM_IDS.has(item?.id));
+    if (cleanedItems.length !== existingItems.length) {
+      await redis.set(KEYS.items, cleanedItems);
+    }
+  }
 }
 
 /**
@@ -557,6 +578,7 @@ export default async function handler(req, res) {
           .json({ ok: true, data: admin ? data : publicView(data) });
       }
       if (action === "items") {
+        await ensureSeed(redis);
         const items = ((await redis.get(KEYS.items)) || []).map(normalizeItem);
         return res
           .status(200)
@@ -612,11 +634,8 @@ export default async function handler(req, res) {
       }
       if (action === "init") {
         const initialized = await redis.get(KEYS.initialized);
-        if (initialized) {
-          return res.status(200).json({ ok: true, seeded: false });
-        }
         await ensureSeed(redis);
-        return res.status(200).json({ ok: true, seeded: true });
+        return res.status(200).json({ ok: true, seeded: !initialized });
       }
       if (action === "log-download") {
         if (!(await withinLimit(redis, `pmch:dl:${ip}`, 30, 60))) {
