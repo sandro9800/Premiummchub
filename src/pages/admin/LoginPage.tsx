@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowRight, KeyRound, ShieldCheck } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { isAuthenticated, login } from "@/lib/auth";
@@ -11,8 +11,12 @@ export function LoginPage() {
   const [p, setP] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const nav = useNavigate();
+  const location = useLocation();
   const toast = useToast();
   const { refresh } = useData();
+  const requestedPath = (location.state as { from?: { pathname?: string } } | null)
+    ?.from?.pathname;
+  const destination = requestedPath?.startsWith("/admin") ? requestedPath : "/admin";
 
   useEffect(() => {
     if (isAuthenticated()) {
@@ -22,17 +26,23 @@ export function LoginPage() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (submitting) return;
+
     setSubmitting(true);
-    const result = await login(u.trim(), p);
-    if (result.ok) {
-      // reload data so admin-only parts (downloads, analytics, drafts) appear
-      await refresh();
-      setSubmitting(false);
+    try {
+      const result = await login(u.trim(), p);
+      if (!result.ok) {
+        toast.push(result.error || "Invalid credentials.", "error");
+        return;
+      }
+
       toast.push("Welcome back, admin.", "success");
-      nav("/admin", { replace: true });
-    } else {
+      nav(destination, { replace: true });
+      void refresh();
+    } catch {
+      toast.push("Unable to sign in. Please try again.", "error");
+    } finally {
       setSubmitting(false);
-      toast.push(result.error || "Invalid credentials.", "error");
     }
   }
 
@@ -53,18 +63,22 @@ export function LoginPage() {
           </p>
           <form onSubmit={onSubmit} className="space-y-3">
             <div>
-              <label className="label">Username</label>
+              <label className="label" htmlFor="admin-username">Username</label>
               <input
+                id="admin-username"
                 className="input"
                 value={u}
                 onChange={(e) => setU(e.target.value)}
                 autoComplete="username"
+                autoCapitalize="none"
+                spellCheck={false}
                 required
               />
             </div>
             <div>
-              <label className="label">Password</label>
+              <label className="label" htmlFor="admin-password">Password</label>
               <input
+                id="admin-password"
                 className="input"
                 type="password"
                 value={p}
